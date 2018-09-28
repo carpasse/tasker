@@ -1,0 +1,46 @@
+{
+  "name": "@carpasse/tasker",
+  "private": true,
+  "description": "Simple node task runner",
+  "author": "carpasse",
+  "scripts": {
+    "clean": "git clean -fdX",
+    "lint": "yarn lint-scripts && lerna run lint",
+    "lint-scripts": "eslint --ignore-path .gitignore './*.js'",
+    "precommit": "npm run lint",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "prepush": "npm test",
+    "test": "lerna run --stream test",
+    "publish-npm": "yarn build && lerna publish --conventional-commits --skip-npm && lerna run publish-npm"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/carpasse/tasker/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/carpasse/tasker.git"
+  },
+  "homepage": "https://github.com/carpasse/tasker#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/mol-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "./node_modules/mol-commitlint-config"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^7.0.0",
+    "cross-env": "^5.2.0",
+    "husky": "^0.14.3",
+    "lerna": "^2.9.1",
+    "mol-commitlint-config": "^1.1.0",
+    "mol-conventional-changelog": "^1.2.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}

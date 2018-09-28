@@ -1,0 +1,29 @@
+{
+  "name": "@carpasse/tasker",
+  "version": "0.1.0",
+  "description": "Simple node task runner",
+  "keywords": [
+    "task runner"
+  ],
+  "author": "carpasse",
+  "main": "src/index.js",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint --ignore-path ../../.gitignore './**/*.js'",
+    "test": "jest",
+    "publish-npm": "npm publish"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "eslint": "^5.2.0",
+    "eslint-config-mailonline": "^9.0.0",
+    "jest": "^23.4.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

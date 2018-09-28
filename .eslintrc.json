@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "mailonline",
+    "mailonline/jest"
+  ],
+  "root": true,
+  "rules": {
+    "import/unambiguous": "off",
+    "import/no-commonjs": "off",
+    "jsdoc/require-description-complete-sentence": "off",
+    "max-len": ["warn", {  "code": 160, "ignoreComments": true }]
+  }
+}
