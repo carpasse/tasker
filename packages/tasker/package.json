@@ -17,6 +17,9 @@
     "src",
     "dist"
   ],
+  "bin": {
+    "tasker": "bin/cli.js"
+  },
   "devDependencies": {
     "cross-env": "^5.2.0",
     "eslint": "^5.2.0",
@@ -25,5 +28,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "args": "^5.0.0"
   }
 }
