@@ -3,13 +3,13 @@
 const args = require('args');
 const getConfig = require('../src/getConfig');
 
-const DEFAULT_CONFIG_PATH = './tasker.config.js';
+const CONFIG_FILE = 'tasker.config.js';
 
 args
-  .option('config', `Path to the config file. Defaults to ${DEFAULT_CONFIG_PATH}`, DEFAULT_CONFIG_PATH, getConfig)
+  .option('config', `Path to the config file. If omitted it will search up for ${CONFIG_FILE} in the directory tree`, null, getConfig)
   .command('run', 'execs the specified task.', (name, sub, options) => {
     // eslint-disable-next-line no-console
-    console.log(name, sub, options);
+    console.log('#### RUN COMMAND', name, sub, options);
   }, ['r']);
 
 // eslint-disable-next-line no-unused-vars
