@@ -12,7 +12,7 @@ const config = {
     parseCommits(angularFormatParser)
   ],
   changelog: [
-    'group-commits-by-package':
+    'group-commits-by-package',
     [
       'github-changelog',
       'file-changelog'
