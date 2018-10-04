@@ -3,7 +3,8 @@
 const parseCommits = () => () => {};
 const angularFormatParser = () => {};
 const util = {
-  foreach: () => {}
+  foreach: () => {},
+  parallel: () => {}
 };
 
 const config = {
@@ -13,10 +14,10 @@ const config = {
   ],
   changelog: [
     'group-commits-by-package',
-    [
+    util.parallel([
       'github-changelog',
       'file-changelog'
-    ]
+    ])
   ],
   'prepare-next-release': [
     'next-release-commits',
@@ -32,10 +33,10 @@ const config = {
     'yarn test',
     'yarn build',
     'commit-list',
-    [
+    util.parallel([
       'changelog',
       'prepare-next-release'
-    ],
+    ]),
     'package-list',
     util.foreach([
       'npm publish'
