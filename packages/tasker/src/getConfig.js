@@ -4,7 +4,6 @@ const findUp = require('find-up');
 
 const CONFIG_FILE_NAME = 'tasker.config.js';
 
-/* eslint-disable filenames/match-exported */
 const getConfig = async (configFile) => {
   const configPath = typeof configFile === 'string' ? path.resolve(configFile) : await findUp(CONFIG_FILE_NAME);
 
