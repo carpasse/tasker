@@ -1,3 +1,4 @@
+const {ChildProcess} = require('child_process');
 const command = require('../command');
 
 describe('command', () => {
@@ -5,40 +6,40 @@ describe('command', () => {
     expect(command('ls')).toBeInstanceOf(Function);
   });
 
-  // TODO: PROPERLY TEST SPAWN LOGIC
-  // it('must execute the passed command', async () => {
-  //   const cmd = command('ls');
-  //   let output = '';
-  //   let errOutput = '';
-
-  //   process.stdout.on('data', (data) => {
-  //     output += data;
-  //   });
-
-  //   process.stderr.on('data', (data) => {
-  //     errOutput += data;
-  //   });
-
-  //   const commandFinish = Promise.all([
-  //     new Promise((resolve) => process.stdout.on('end', resolve)),
-  //     new Promise((resolve) => process.stderr.on('end', resolve))
-  //   ]);
-
-  //   cmd();
-
-  //   await commandFinish;
-
-  //   expect(errOutput).toBe('');
-  //   expect(output).toContain('package.json');
-  // });
-
-  it('must fail the promise if there is a problem with the command', async () => {
+  it('must resolve the promise if there is a problem with the command', async () => {
     const cmd = command('wrong command');
 
     try {
-      await cmd();
+      await cmd().payload;
     } catch (error) {
       expect(error).toBeDefined();
+      expect(error.message).toBe('Command \'wrong command\' exited with code Error: spawn wrong ENOENT');
     }
+  });
+
+  it('must return a payload with the stdout of the command', async () => {
+    const ls = command('ls');
+    const {
+      cmd,
+      name,
+      payload
+    } = ls();
+
+    expect(cmd).toBeInstanceOf(ChildProcess);
+    expect(name).toBe('ls');
+    expect(await payload).toContain('package.json');
+  });
+
+  it('must be possible to configure the spawn', async () => {
+    const ls = command('ls');
+    const {
+      cmd,
+      name,
+      payload
+    } = ls(null, {stdio: 'inherit'});
+
+    expect(cmd).toBeInstanceOf(ChildProcess);
+    expect(name).toBe('ls');
+    expect(await payload).toBe('');
   });
 });

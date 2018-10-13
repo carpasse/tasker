@@ -1,33 +1,47 @@
-const {spawn} = require('child_process');
+const chalk = require('chalk');
+const spawn = require('./spawn');
 
-const execute = (cmdText) => {
-  const cmdLine = cmdText.replace(/\s+/g, ' ').trim();
-  const [cmdName, ...params] = cmdLine.split(' ');
+const execute = (cmdText, options = {}) => {
+  // eslint-disable-next-line no-console
+  console.log('•••••••••••••••', options);
 
-  return new Promise((resolve, reject) => {
-    const cmd = spawn(cmdName, params || [], {stdio: 'inherit'});
+  const cmd = spawn(cmdText, options);
 
-    cmd.on('exit', (code) => {
-      if (code !== 0) {
-        reject(new Error(`Command ${cmdText} exited with code ${code}`));
+  return {
+    cmd,
+    name: cmdText,
+    payload: new Promise((resolve, reject) => {
+      const handleCmdError = (code) => {
+        reject(new Error(`Command '${cmdText}' exited with code ${code}`));
+      };
+      let stdout = '';
 
-        return;
+      if (cmd.stdout) {
+        cmd.stdout.on('data', (data) => {
+          // eslint-disable-next-line no-console
+          console.log(chalk`{bold.green \`${cmdText}\` stdout:} ${data}`);
+          stdout += data;
+        });
+
+        cmd.stderr.on('data', (data) => {
+          /* istanbul ignore next */
+          // eslint-disable-next-line no-console
+          console.error(chalk`{bold.yellow \`${cmdText}\` stderr:} ${data}`);
+        });
       }
+      cmd.on('error', handleCmdError);
+      cmd.on('close', (code) => {
+        if (code !== 0) {
+          handleCmdError(code);
 
-      resolve();
-    });
+          return;
+        }
 
-    cmd.on('error', (code) => {
-      if (code !== 0) {
-        reject(new Error(`Command ${cmdText} exited with code ${code}`));
-
-        return;
-      }
-
-      resolve();
-    });
-  });
+        resolve(stdout);
+      });
+    })
+  };
 };
-const command = (cmd) => () => execute(cmd);
+const command = (cmd) => (payload, options) => execute(cmd, options);
 
 module.exports = command;

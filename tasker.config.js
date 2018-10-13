@@ -1,10 +1,9 @@
 /* eslint-disable filenames/match-exported */
 
 const config = {
-  validation: [
-    'yarn lint',
-    'yarn test'
-  ]
+  lint: ['yarn lint'],
+  test: ['yarn test'],
+  validate: ['lint', 'test']
 };
 
 module.exports = config;

@@ -7,8 +7,9 @@ const run = (main_task, config, payload) => {
     throw new TypeError(`Can't find a valid task named '${main_task}' in the config`);
   }
 
-  return steps.reduce(async (prevStep, nextStep) => {
-    const newPayload = await prevStep;
+  return steps.reduce(async (prevPayload, nextStep) => {
+    const data = await prevPayload;
+    const newPayload = data && data.payload ? await data.payload : await data;
 
     if (config[nextStep]) {
       return run(nextStep, config, newPayload);
@@ -17,7 +18,7 @@ const run = (main_task, config, payload) => {
     const task = getTask(nextStep);
 
     return task(newPayload);
-  }, Promise.resolve(payload));
+  }, payload);
 };
 
 module.exports = run;

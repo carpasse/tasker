@@ -28,14 +28,13 @@ describe('getTask', () => {
     expect(task).toHaveBeenCalledWith(opts);
   });
 
-  // TODO: PROPERLY TEST command LOGIC
-  // it('if a task is a string but not a module it must assume it is a command', async () => {
-  //   const task = getTask('ls');
+  it('if a task is a string but not a module it must assume it is a command', async () => {
+    const task = getTask('ls');
 
-  //   const {stdout} = await task();
+    const {payload} = task({stdio: 'pipe'});
 
-  //   expect(stdout).toContain('package.json');
-  // });
+    expect(await payload).toContain('package.json');
+  });
 
   it('must throw if the we pass an object', () => {
     expect(getTask).toThrow();

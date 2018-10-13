@@ -15,13 +15,14 @@ describe('run', () => {
     const mainTask = 'task';
     const config = {
       [mainTask]: [
+        'echo -n test',
         makeTask('task1'),
         makeTask('task2'),
         makeTask('task3')
       ]
     };
 
-    expect(await run(mainTask, config)).toBe('task1-task2-task3');
+    expect(await run(mainTask, config)).toBe('test-task1-task2-task3');
   });
 
   it('must be fractal. I.E. a main task can be compose of other main tasks', async () => {
@@ -31,11 +32,12 @@ describe('run', () => {
         'other',
         makeTask('task3')],
       other: [
+        'echo -n test',
         makeTask('task1'),
         makeTask('task2')
       ]
     };
 
-    expect(await run(mainTask, config)).toBe('task1-task2-task3');
+    expect(await run(mainTask, config)).toBe('test-task1-task2-task3');
   });
 });
