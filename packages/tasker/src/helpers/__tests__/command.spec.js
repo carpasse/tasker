@@ -13,7 +13,7 @@ describe('command', () => {
       await cmd().payload;
     } catch (error) {
       expect(error).toBeDefined();
-      expect(error.message).toBe('Command \'wrong command\' exited with code Error: spawn wrong ENOENT');
+      expect(error.message).toBe('Command \'wrong command\' exited with code 127');
     }
   });
 

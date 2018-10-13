@@ -1,11 +1,11 @@
+const {spawn} = require('child_process');
 const chalk = require('chalk');
-const spawn = require('./spawn');
 
 const execute = (cmdText, options = {}) => {
-  // eslint-disable-next-line no-console
-  console.log('•••••••••••••••', options);
-
-  const cmd = spawn(cmdText, options);
+  const cmd = spawn(cmdText, {
+    shell: true,
+    ...options
+  });
 
   return {
     cmd,

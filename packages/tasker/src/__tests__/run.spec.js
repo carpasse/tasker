@@ -15,7 +15,7 @@ describe('run', () => {
     const mainTask = 'task';
     const config = {
       [mainTask]: [
-        'echo -n test',
+        'printf test',
         makeTask('task1'),
         makeTask('task2'),
         makeTask('task3')
@@ -32,7 +32,7 @@ describe('run', () => {
         'other',
         makeTask('task3')],
       other: [
-        'echo -n test',
+        'printf test',
         makeTask('task1'),
         makeTask('task2')
       ]
