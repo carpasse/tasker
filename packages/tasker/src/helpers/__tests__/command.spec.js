@@ -1,4 +1,5 @@
 const {ChildProcess} = require('child_process');
+const {version} = require('../../../package.json');
 const command = require('../command');
 
 describe('command', () => {
@@ -23,7 +24,7 @@ describe('command', () => {
       cmd,
       name,
       payload
-    } = ls();
+    } = ls(null, {verbose: false});
 
     expect(cmd).toBeInstanceOf(ChildProcess);
     expect(name).toBe('ls');
@@ -41,5 +42,18 @@ describe('command', () => {
     expect(cmd).toBeInstanceOf(ChildProcess);
     expect(name).toBe('ls');
     expect(await payload).toBe('');
+  });
+
+  it('must accept pipe commands', async () => {
+    const pipeCmd = command('cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed \'s/[version:,",]//g\' | tr -d \'[[:space:]]\'');
+    const {
+      cmd,
+      name,
+      payload
+    } = pipeCmd(null, {verbose: false});
+
+    expect(await payload).toBe(version);
+    expect(cmd).toBeInstanceOf(ChildProcess);
+    expect(name).toBe('cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed \'s/[version:,",]//g\' | tr -d \'[[:space:]]\'');
   });
 });

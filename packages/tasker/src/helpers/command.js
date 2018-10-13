@@ -7,6 +7,8 @@ const execute = (cmdText, options = {}) => {
     ...options
   });
 
+  const {verbose = true} = options;
+
   return {
     cmd,
     name: cmdText,
@@ -18,15 +20,17 @@ const execute = (cmdText, options = {}) => {
 
       if (cmd.stdout) {
         cmd.stdout.on('data', (data) => {
-          // eslint-disable-next-line no-console
-          console.log(chalk`{bold.green \`${cmdText}\` stdout:} ${data}`);
+          if (verbose) {
+            // eslint-disable-next-line no-console
+            console.log(chalk`{bold.green \`${cmdText}\` stdout:} ${data}`);
+          }
           stdout += data;
         });
 
         cmd.stderr.on('data', (data) => {
           /* istanbul ignore next */
           // eslint-disable-next-line no-console
-          console.error(chalk`{bold.yellow \`${cmdText}\` stderr:} ${data}`);
+          console.error(chalk`{bold.red \`${cmdText}\` stderr:} ${data}`);
         });
       }
       cmd.on('error', handleCmdError);
