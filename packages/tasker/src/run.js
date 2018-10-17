@@ -1,24 +1,43 @@
 const getTask = require('./getTask');
 
-const run = (main_task, config, payload) => {
+const runTask = (taskName, payload, options) => {
+  if (options.config[taskName]) {
+    // eslint-disable-next-line no-use-before-define
+    return run(taskName, options, payload);
+  }
+
+  const task = getTask(taskName);
+
+  return task(payload, options);
+};
+
+const run = (main_task, options, data) => {
+  const {config, logLevel} = options;
   const steps = config[main_task];
 
+  /* istanbul ignore if */
   if (!Array.isArray(steps)) {
     throw new TypeError(`Can't find a valid task named '${main_task}' in the config`);
   }
 
-  return steps.reduce(async (prevPayload, nextStep) => {
-    const data = await prevPayload;
-    const newPayload = data && data.payload ? await data.payload : await data;
-
-    if (config[nextStep]) {
-      return run(nextStep, config, newPayload);
+  return steps.reduce(async (payload, nextStep) => {
+    /* istanbul ignore if */
+    if (logLevel > 1) {
+      // eslint-disable-next-line no-console
+      console.log(`Starting \`${nextStep}\``);
     }
 
-    const task = getTask(nextStep);
+    const response = runTask(nextStep, await payload, options);
+    const newPayload = await (response && response.payload ? response.payload : response);
 
-    return task(newPayload);
-  }, payload);
+    /* istanbul ignore if */
+    if (logLevel > 1) {
+      // eslint-disable-next-line no-console
+      console.log(`\`${nextStep}\` finished`);
+    }
+
+    return newPayload;
+  }, data);
 };
 
 module.exports = run;

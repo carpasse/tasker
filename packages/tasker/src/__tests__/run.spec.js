@@ -22,7 +22,7 @@ describe('run', () => {
       ]
     };
 
-    expect(await run(mainTask, config)).toBe('test-task1-task2-task3');
+    expect(await run(mainTask, {config})).toBe('test-task1-task2-task3');
   });
 
   it('must be fractal. I.E. a main task can be compose of other main tasks', async () => {
@@ -38,6 +38,6 @@ describe('run', () => {
       ]
     };
 
-    expect(await run(mainTask, config)).toBe('test-task1-task2-task3');
+    expect(await run(mainTask, {config})).toBe('test-task1-task2-task3');
   });
 });

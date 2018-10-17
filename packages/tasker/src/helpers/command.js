@@ -1,13 +1,10 @@
 const {spawn} = require('child_process');
-const chalk = require('chalk');
 
 const execute = (cmdText, options = {}) => {
   const cmd = spawn(cmdText, {
     shell: true,
     ...options
   });
-
-  const {verbose = true} = options;
 
   return {
     cmd,
@@ -20,17 +17,7 @@ const execute = (cmdText, options = {}) => {
 
       if (cmd.stdout) {
         cmd.stdout.on('data', (data) => {
-          if (verbose) {
-            // eslint-disable-next-line no-console
-            console.log(chalk`{bold.green \`${cmdText}\` stdout:} ${data}`);
-          }
           stdout += data;
-        });
-
-        cmd.stderr.on('data', (data) => {
-          /* istanbul ignore next */
-          // eslint-disable-next-line no-console
-          console.error(chalk`{bold.red \`${cmdText}\` stderr:} ${data}`);
         });
       }
       cmd.on('error', handleCmdError);
