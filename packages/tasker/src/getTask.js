@@ -13,10 +13,6 @@ const findModule = (task) => {
     return require(resolveModule(task));
   }
 
-  if (isModule(resolveModule(`${task}-task`))) {
-    return require(resolveModule(`${task}-task`));
-  }
-
   return null;
 };
 

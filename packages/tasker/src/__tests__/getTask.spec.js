@@ -2,7 +2,6 @@
 const child_process = require('child_process');
 const getTask = require('../getTask');
 const mockTask = require('./mockTask');
-const mock_task = require('./mock-task');
 
 describe('getTask', () => {
   it('must return the passed function', () => {
@@ -13,7 +12,6 @@ describe('getTask', () => {
 
   it('must return the module', () => {
     expect(getTask('src/__tests__/mockTask')).toBe(mockTask);
-    expect(getTask('src/__tests__/mock')).toBe(mock_task);
     expect(getTask('child_process')).toBe(child_process);
   });
 
